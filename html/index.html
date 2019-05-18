@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+  
+
+    <div id="document"></div>
+    <pre class="commands">
+-- Top Level Commands
+> help
+Show List of Commands
+> current 
+SHow Current Command Handler
+> select project {project name}
+open project Selector
+
+-- On Project Selection [FolderBrowser]
+> c:\ (custom path)
+go to current path
+
+> create {foldername} | mkdir {foldername}
+create new folder in this path
+
+!--> add {foldername} {filename}
+
+> cd {foldername} 
+move forward to folder
+
+!--> cd ..
+!--> cd \
+
+> select {project name}
+At start : Select project From Recent Projects
+select current folder as active directory
+
+
+-- After Project Selected [ActionBoardPage]
+> (new | create | add) group {group name}
+add current group fo current folder
+if {group name} is empty => open new group form
+>select group {group name}
+select this group as selected group
+if {group name} is empty => select last group 
+!-- on empty show list box
+
+> (new | create | add) subject {subject name}
+add current subject fo current folder
+if {subject name} is empty => open new subject form
+>select subject {subject name}
+select this subject as selected subject
+if {subject name} is empty => select last subject 
+
+note: this command can also change active group
+
+!-- on empty show list box
+
+> create directory
+make idea subject as physical  and set path for it
+
+<!-- FolderPreviewPage -->
+-- FolderPreviewPage (normal mode)
+> create {foldername 1},{foldername 2},{foldername 3},.. 
+create multiple folder
+
+> create {file1},{file2},{file3},.. 
+create multiple file
+
+> create {foldername1}/{sub file 1},.. 
+create multiple file on sub folders
+
+> ( run | launch )  {folder} | {file} | {folder}/{file} 
+Start running File on default application
+
+> model {Model File Name}
+create .xmodel file
+
+>delete  {folder} |{file}
+Delete File or Folder
+
+!--> rename folder
+
+> cmd
+switch to Command prompt mode
+
+> [command] [--argument] 
+start custom commands like 
+> code .
+
+
+-- FolderPreviewPage (Command prompt mode)
+execute any cmd commands
+    </pre>
+
+
+    <script>
+        function Make(elname, content = "", classname = "") {
+
+            let m = document.createElement(elname);
+            if (content.length > 0) m.innerHTML = content;
+            if (classname.length > 0) m.className = classname;
+            return m;
+        }
+
+        var pre = document.querySelector("pre").textContent;
+        var doc = document.querySelector("#document");
+
+        var lines = pre.split("\n");
+
+        lines.forEach(ln => {
+
+            if (ln.startsWith("--")) {
+                doc.appendChild(Make("h2", ln.substring(2)));
+                return;
+            }
+
+            if (ln.startsWith("!-->")) {
+                doc.appendChild(Make("code", ln.substring(4) ,"comment"));
+                return;
+            }
+            if (ln.startsWith("!--")) {
+                doc.appendChild(Make("div", ln.substring(3) ,"comment"));
+                return;
+            }
+            if (ln.startsWith(">")) {
+                doc.appendChild(Make("code", ln.substring(1), "command"));
+                return;
+            }
+
+            doc.appendChild(Make("p", ln));
+        });
+    </script>
+
+
+    <style>
+        body {
+            background-color: #212121;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #646464;
+        }
+
+        h2 {
+            font-weight: 400;
+            color: #cccccc;
+            margin: 0;
+            margin-top: 20px;
+        }
+
+        code.command {
+            font-weight: 400;
+            color: orange;
+            color: red;
+            font-size: 1.4em;
+            margin-top: 20px;
+            display: inline-block;
+
+        }
+        code.command:before{
+            content: "> ";
+            color: #424242;
+        }
+        code.comment {
+            font-weight: 400;
+            color: green;
+            font-size: 1.2em;
+            margin-left: 20px;
+            display: block;
+        }
+
+        div.comment{
+            color: #66bb6a;
+            margin-left: 20px;
+           
+        }
+
+        code.comment:before{
+            content: "comment:";  
+            color: #424242;
+        }
+        div.comment:before{
+            content: "comment:";
+            color: #424242;
+        }
+        pre{
+            display: none;
+        }
+
+        p{
+            margin:0 20px ;
+        }
+    </style>
+      <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script> -->
+</body>
+
+</html>
